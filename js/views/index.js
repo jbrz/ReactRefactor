@@ -1,5 +1,8 @@
-import TodoView from './todo';
+import TodoView from './TodoView';
+import MainView from './MainView';
+
 
 export {
-  TodoView
+  TodoView,
+  MainView
 };

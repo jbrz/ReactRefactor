@@ -1,10 +1,9 @@
-// Obviously we are using jquery
+
 import $ from 'jquery';
-
-
-// This just allows us to call $(form).serializeJSON()
-// and get back a JSON object of the form data.
 import 'jquery-serializejson';
+import Backbone from 'backbone';
+import React from 'react';
+import ReactDom from 'react-dom'
 
 
 
@@ -24,18 +23,8 @@ function template(model) {
   // use a different action based on if model is complete
   let action = complete ? 'undo' : 'remove';
   
-  // define our template
-  return `
-    <li class="todo">
-      <span class="title ${complete ? 'complete' : ''}">
-        ${model.get('title')}
-      </span>
-      <button class="${action}" data-id="${model.id}">
-        <i class="fa fa-${fa}"></i>
-      </button>
-    </li>
-  `;
 }
+  // define our template
 
 
 
@@ -45,22 +34,37 @@ function template(model) {
  *
  */
 
-function wrapper() {
-  return `
-    <header>
-      <h1>Things Todo</h1>
-    </header>
-    <main>
-      <form class="todo-add">
-        <input type="text" name="title" placeholder="Add Something">
-        <button><i class="fa fa-plus"></i></button>
-      </form>
-      <ul class="todo-list"></ul>
-    </main>
-    <footer>
-      <button class="clear">Clear Complete</button>
-    </footer>
-  `;
+let onSubmitHandler = function() {
+  // prevent form from causing page to reload
+  e.preventDefault();
+  // find the element with an icon
+  // and convert it to a spinner
+  this.classList.remove('fa-plus')
+  this.classList.add('fa-spin')
+  this.classList.add('fa-spinner');
+  // get the data from the form
+  let data = this.$el.find('form').serializeJSON();
+  // use data to create a new todo item
+  this.collection.add(data).save().then(() => this.render());
+};
+
+let onRemoveHandler = function() {
+  e.preventDefault();
+    // get the button from the event
+    let button = $(e.currentTarget);
+    // get the todo id from the button
+    let id = $button.data('id');
+    // get the model by id from the collection
+    let model = this.collection.get(id);
+    // convert button icon to a spinner
+      this.classList.removeClass('fa-close')
+      this.classList.add('fa-spin')
+      this.classList.add('fa-spinner');
+    // Save the `completeAt` property on the todo
+    model.save({
+      completeAt: new Date().toString()
+    }).then(() => this.render());
+  });
 }
 
 
@@ -83,7 +87,7 @@ function View(collection) {
   this.$el = $('<div/>').addClass('todo-collection');
   
   // Add event listener for when form is submitted.
-  this.$el.on('submit', 'form', (e) => {
+#  this.$el.on('submit', 'form', (e) => {
     // prevent form from causing page to reload
     e.preventDefault();
     // find the element with an icon
@@ -96,10 +100,10 @@ function View(collection) {
     let data = this.$el.find('form').serializeJSON();
     // use data to create a new todo item
     this.collection.add(data).save().then(() => this.render());
-  });
+#  });
   
   // Add event listener for when a todo is marked complete
-  this.$el.on('click', '.remove', (e) => {
+#  this.$el.on('click', '.remove', (e) => {
     e.preventDefault();
     // get the button from the event
     let $button = $(e.currentTarget);
@@ -116,7 +120,8 @@ function View(collection) {
     model.save({
       completeAt: new Date().toString()
     }).then(() => this.render());
-  });
+#  });
+
   
   // Add event listener for when completed todo undone
   this.$el.on('click', '.undo', (e) => {
@@ -151,7 +156,7 @@ function View(collection) {
         <h4>Deleting Complete Todos</h4>
       </div>
     `);
-    // Remove the cleat button
+    // Remove the clear button
     this.$el.find('footer .clear').remove();
     // Grab all the models marked complete
     let completeModels = this.collection.filter((model) => {
@@ -179,9 +184,7 @@ function View(collection) {
 
 
 /*
- *
  * Set the View prototype.
- *
  */
 
 View.prototype = {

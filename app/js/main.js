@@ -49,9 +49,9 @@ console.log('Hello, World');
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-var APP_ID = 'mmoMgOQzCeRE8Ad4vmRkHMLYyTwEPPrAGXMEfDFm';
-var API_KEY = 'xvocUSdI55mrUV7m7fb0ylyXO2kQ6EML2mlBDEoY';
-var APP_URL = 'https://api.parse.com/1/classes/Todo';
+var APP_ID = 'PZ6RarOP9msJDLa5elO6MxoWTCaY1hqBQk5jTlCr';
+var API_KEY = 'C5qXP7XXHa6qZCLolbEJixgfcsKcn80LfKq0m6xR';
+var APP_URL = 'https://api.parse.com/1/classes/Todos';
 
 exports['default'] = {
   APP_ID: APP_ID,
@@ -306,9 +306,7 @@ function View(collection) {
 }
 
 /*
- *
  * Set the View prototype.
- *
  */
 
 View.prototype = {

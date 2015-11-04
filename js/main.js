@@ -6,12 +6,7 @@ import parse from './parse_auth';
 import {TodoCollection} from './resources';
 import {TodoView} from './views';
 
-$.ajaxSetup({
-  headers: {
-    'X-Parse-Application-Id': parse.APP_ID,
-    'X-Parse-REST-API-Key': parse.API_KEY
-  }
-});
+let el = document.querySelector('.app');
 
 let todos = new TodoCollection();
 
@@ -20,6 +15,3 @@ todos.fetch().then(function() {
   $('.wrapper').html(new TodoView(todos).render().$el);
 
 });
-
-
-console.log('Hello, World');
